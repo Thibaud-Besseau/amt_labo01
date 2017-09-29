@@ -6,10 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="AMTPeopleManager" />
         <module name="LandingPageMVCApp" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="AMTPeopleManager" target="1.7" />
       <module name="LandingPageMVCApp" target="1.7" />
     </bytecodeTargetLevel>
   </component>
