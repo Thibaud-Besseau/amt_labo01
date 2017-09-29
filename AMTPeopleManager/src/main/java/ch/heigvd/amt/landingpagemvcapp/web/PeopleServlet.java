@@ -2,6 +2,7 @@ package ch.heigvd.amt.landingpagemvcapp.web;
 
 import ch.heigvd.amt.landingpagemvcapp.model.People;
 import ch.heigvd.amt.landingpagemvcapp.services.PeopleManager;
+import org.json.JSONException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -41,7 +42,13 @@ public class PeopleServlet extends HttpServlet
 //        request.setAttribute("thePeople", people);
 //	request.getRequestDispatcher("/WEB-INF/pages/people.jsp").forward(request,response);
 
-		peopleManager.randomPeople();
+		try {
+			peopleManager.randomPeople(10);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		List<People> list = peopleManager.getListPeople();
 		request.setAttribute("dataPeople", list);
 		//request.getRequestDispatcher("/WEB-INF/pages/people.jsp").forward(request,response);

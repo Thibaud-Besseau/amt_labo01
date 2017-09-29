@@ -106,6 +106,7 @@
                             <td>    ${requestScope.dataPeople[0].email} </td>
                             <td>    ${requestScope.dataPeople[0].phone} </td>
                         </tr>
+
                         </tbody>
                     </table>
                 </div>
