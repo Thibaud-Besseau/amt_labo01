@@ -5,6 +5,6 @@ package ch.heigvd.amt.landingpagemvcapp.model.Enums;
  */
 public enum Gender
 {
-   HOMME,
-   FEMMME;
+   Men,
+   Women;
 }

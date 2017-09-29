@@ -17,7 +17,7 @@ public class PeopleManager
 	public void randomPeople(){
 
 		for(int i = 0; i < 10 ; i++) {
-			listPeople.add(new People(Gender.HOMME,"Donald Trump","14 juin 1946","donald.trump@white-house.gov","1600 Pennsylvania Ave NW, Washington, DC 20500, États-Unis", "+1 202-456-1111"));
+			listPeople.add(new People(Gender.Men,"Donald Trump","14 juin 1946","donald.trump@white-house.gov", "+1 202-456-1111"));
 		}
 	}
 

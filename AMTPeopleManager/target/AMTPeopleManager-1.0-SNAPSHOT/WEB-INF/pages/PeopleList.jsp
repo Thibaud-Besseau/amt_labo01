@@ -43,15 +43,15 @@
                 </a>
             </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Data">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="people-list">
                     <i class="fa fa-fw fa-table"></i>
                     <span class="nav-link-text">Tables</span>
                 </a>
             </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Settings">
-                <a class="nav-link" href="register.html">
+                <a class="nav-link" href="settings">
                     <i class="fa fa-fw fa-wrench"></i>
-                    <span class="nav-link-text">Components</span>
+                    <span class="nav-link-text">Settings</span>
                 </a>
             </li>
         </ul>
@@ -86,7 +86,6 @@
                             <th>Name</th>
                             <th>Birthday</th>
                             <th>Email</th>
-                            <th>Address</th>
                             <th>Phone</th>
                         </tr>
                         </thead>
@@ -96,7 +95,6 @@
                             <th>Name</th>
                             <th>Birthday</th>
                             <th>Email</th>
-                            <th>Address</th>
                             <th>Phone</th>
                         </tr>
                         </tfoot>
@@ -106,7 +104,6 @@
                             <td>    ${requestScope.dataPeople[0].name} </td>
                             <td>    ${requestScope.dataPeople[0].birthday} </td>
                             <td>    ${requestScope.dataPeople[0].email} </td>
-                            <td>    ${requestScope.dataPeople[0].address} </td>
                             <td>    ${requestScope.dataPeople[0].phone} </td>
                         </tr>
                         </tbody>

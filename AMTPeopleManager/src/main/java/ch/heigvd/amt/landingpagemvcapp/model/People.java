@@ -11,16 +11,14 @@ public class People
 	public final String name;
 	public final String birthday;
 	public final String email;
-	public final String address;
 	public final String phone;
 
-	public People(Gender gender, String name, String birthday, String email, String address, String phone)
+	public People(Gender gender, String name, String birthday, String email, String phone)
 	{
 		this.gender = gender;
 		this.name = name;
 		this.birthday = birthday;
 		this.email = email;
-		this.address = address;
 		this.phone = phone;
 	}
 
@@ -42,11 +40,6 @@ public class People
 	public String getEmail()
 	{
 		return email;
-	}
-
-	public String getAddress()
-	{
-		return address;
 	}
 
 	public String getPhone()
