@@ -99,13 +99,16 @@
                         </tr>
                         </tfoot>
                         <tbody>
-                        <tr>
-                            <td>    ${requestScope.dataPeople[0].gender} </td>
-                            <td>    ${requestScope.dataPeople[0].name} </td>
-                            <td>    ${requestScope.dataPeople[0].birthday} </td>
-                            <td>    ${requestScope.dataPeople[0].email} </td>
-                            <td>    ${requestScope.dataPeople[0].phone} </td>
-                        </tr>
+                        <c:forEach items="${dataPeople}" var="person">
+                            <tr>
+
+                                <td>    ${person.gender} </td>
+                                <td>    ${person.name} </td>
+                                <td>    ${person.birthday} </td>
+                                <td>    ${person.email} </td>
+                                <td>    ${person.phone} </td>
+                            </tr>
+                        </c:forEach>
 
                         </tbody>
                     </table>
@@ -162,4 +165,3 @@
 </body>
 
 </html>
-

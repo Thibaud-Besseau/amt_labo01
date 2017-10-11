@@ -5,7 +5,7 @@ import ch.heigvd.amt.landingpagemvcapp.model.Enums.Gender;
 /**
  * Created by Thibaud Besseau on 24.09.2017.
  */
-public class People
+public class Person
 {
 	public final Gender gender;
 	public final String name;
@@ -13,7 +13,7 @@ public class People
 	public final String email;
 	public final String phone;
 
-	public People(Gender gender, String name, String birthday, String email, String phone)
+	public Person(Gender gender, String name, String birthday, String email, String phone)
 	{
 		this.gender = gender;
 		this.name = name;

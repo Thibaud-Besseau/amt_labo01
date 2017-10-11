@@ -1,9 +1,10 @@
 package ch.heigvd.amt.landingpagemvcapp.web;
 
-import ch.heigvd.amt.landingpagemvcapp.model.People;
-import ch.heigvd.amt.landingpagemvcapp.services.PeopleManager;
-import org.json.JSONException;
+import ch.heigvd.amt.landingpagemvcapp.model.Person;
+import ch.heigvd.amt.landingpagemvcapp.services.PersonManager;
+import ch.heigvd.amt.landingpagemvcapp.services.PersonManagerLocal;
 
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,10 +16,11 @@ import java.util.List;
 /**
  * Created by Thibaud Besseau on 24.09.2017.
  */
-@WebServlet(name = "PeopleServlet", urlPatterns = {"/people-list"})
-public class PeopleServlet extends HttpServlet
+@WebServlet(name = "PersonServlet", urlPatterns = {"/people-list"})
+public class PersonServlet extends HttpServlet
 {
-	PeopleManager peopleManager = new PeopleManager();
+	@EJB
+	PersonManagerLocal personManager ;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
@@ -38,21 +40,10 @@ public class PeopleServlet extends HttpServlet
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			  throws ServletException, IOException {
 
-//        People people = peopleManager.randomPeople();
-//        request.setAttribute("thePeople", people);
-//	request.getRequestDispatcher("/WEB-INF/pages/people.jsp").forward(request,response);
-
-		try {
-			peopleManager.randomPeople(10);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		List<People> list = peopleManager.getListPeople();
-		request.setAttribute("dataPeople", list);
-		//request.getRequestDispatcher("/WEB-INF/pages/people.jsp").forward(request,response);
-		request.getRequestDispatcher("/WEB-INF/pages/PeopleList.jsp").forward(request,response);
+		response.setContentType("text/html:charset=UTF-8");
+		List<Person> list = personManager.findAllPerson();
+		request.setAttribute("dataPeople",list);
+		this.getServletContext().getRequestDispatcher("/WEB-INF/pages/PeopleList.jsp").forward(request,response);
 	}
 
 
