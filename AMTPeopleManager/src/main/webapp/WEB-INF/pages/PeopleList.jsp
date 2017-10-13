@@ -83,7 +83,8 @@
                         <thead>
                         <tr>
                             <th>Gender</th>
-                            <th>Name</th>
+                            <th>Last Name</th>
+                            <th>First Name</th>
                             <th>Birthday</th>
                             <th>Email</th>
                             <th>Phone</th>
@@ -92,7 +93,8 @@
                         <tfoot>
                         <tr>
                             <th>Gender</th>
-                            <th>Name</th>
+                            <th>Last Name</th>
+                            <th>First Name</th>
                             <th>Birthday</th>
                             <th>Email</th>
                             <th>Phone</th>
