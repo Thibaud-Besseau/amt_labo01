@@ -110,7 +110,8 @@
                             <tr>
 
                                 <td>    ${person.gender} </td>
-                                <td>    ${person.firstName}   ${person.lastName} </td>
+                                <td>    ${person.firstName}  </td>
+                                <td>    ${person.lastName} </td>
                                 <td>    ${person.birthday} </td>
                                 <td>    ${person.email} </td>
                                 <td>    ${person.phone} </td>
