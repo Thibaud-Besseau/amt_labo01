@@ -38,11 +38,6 @@ public class SettingsServlet extends HttpServlet
 			  throws ServletException, IOException
 	{
 
-//        Person people = peopleManager.randomPeople();
-//        request.setAttribute("thePeople", people);
-//	request.getRequestDispatcher("/WEB-INF/pages/people.jsp").forward(request,response);
-
-		//request.getRequestDispatcher("/WEB-INF/pages/people.jsp").forward(request,response);
 		request.getRequestDispatcher("/WEB-INF/pages/settings.jsp").forward(request, response);
 	}
 

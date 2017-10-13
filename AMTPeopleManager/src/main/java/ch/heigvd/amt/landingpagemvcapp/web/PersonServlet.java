@@ -40,13 +40,10 @@ public class PersonServlet extends HttpServlet
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			  throws ServletException, IOException {
 
-		System.out.println("HELLO");
 
 		//get list
 		List<Person> list = personManager.getListPeople();
-		System.out.println(list.size());
 		request.setAttribute("dataPeople", list);
-		//request.getRequestDispatcher("/WEB-INF/pages/people.jsp").forward(request,response);
 		request.getRequestDispatcher("/WEB-INF/pages/PeopleList.jsp").forward(request,response);
 	}
 
