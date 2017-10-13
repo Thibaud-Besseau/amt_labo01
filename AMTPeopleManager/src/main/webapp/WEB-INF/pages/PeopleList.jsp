@@ -76,7 +76,10 @@
         <!-- Example DataTables Card-->
         <div class="card mb-3">
             <div class="card-header">
-                <i class="fa fa-table"></i> Data Table Example</div>
+                <a  href='person-action?action=add'
+                class="btn btn-block btn-success btn-lg pull-right">Add a person
+                </a>
+            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -88,6 +91,7 @@
                             <th>Birthday</th>
                             <th>Email</th>
                             <th>Phone</th>
+                            <th>Actions</th>
                         </tr>
                         </thead>
                         <tfoot>
@@ -98,6 +102,7 @@
                             <th>Birthday</th>
                             <th>Email</th>
                             <th>Phone</th>
+                            <th>Actions</th>
                         </tr>
                         </tfoot>
                         <tbody>
@@ -105,10 +110,19 @@
                             <tr>
 
                                 <td>    ${person.gender} </td>
-                                <td>    ${person.name} </td>
+                                <td>    ${person.firstName}   ${person.lastName} </td>
                                 <td>    ${person.birthday} </td>
                                 <td>    ${person.email} </td>
                                 <td>    ${person.phone} </td>
+                                <td>
+
+                                    <button class="btn-flat circle greenButton ">
+                                        <span style="margin:auto" style="display:table"
+                                          class="fa fa-fw fa-edit"></span></button>
+                                    <button class="btn-flat circle greenButton ">
+                                        <span style="margin:auto" style="display:table"
+                                              class="fa fa-fw fa-remove"></span></button>
+                                </td>
                             </tr>
                         </c:forEach>
 

@@ -20,130 +20,152 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
 
-/**
- * Created by Thibaud Besseau on 24.09.2017.
- */
 @Stateless
-public class PersonManager implements PersonManagerLocal {
-    protected List<Person> listPeople = new ArrayList();
-    int id;
-    final int MAX_USER_API = 5000;
+public class PersonManager implements PersonManagerLocal
+{
 
-    // JDBC Acces
-    @Resource(lookup = "java:/jdbc/person")
-    private DataSource dataSource;
+	protected List<Person> listPeople = new ArrayList();
+	int id;
+	final int MAX_USER_API = 5000;
 
+	// JDBC Acces
+	@Resource(lookup = "java:/jdbc/person")
+	private DataSource dataSource;
 
-    public void randomPeople(int number) throws IOException {
-        int numbertemp;
-        System.out.println("total" + number);
+	public void randomPeople(int number) throws IOException {
+		int numbertemp;
+		System.out.println("total" + number);
 
-        //clear the old list
-        listPeople.clear();
-        System.out.println(listPeople.size());
-        Connection con= null;
+		//clear the old list
+		listPeople.clear();
+		System.out.println(listPeople.size());
+		Connection con= null;
 
-        try {
-        while (number != 0) {
-            if (number > MAX_USER_API) {
-                numbertemp = 5000;
-            } else {
-                numbertemp = number;
-            }
+		try {
+			while (number != 0) {
+				if (number > MAX_USER_API) {
+					numbertemp = 5000;
+				} else {
+					numbertemp = number;
+				}
 
-            // Génération du Json
-            URL url = new URL("https://randomuser.me/api/?inc=gender,name,dob,email,phone&results=" + numbertemp);
-            InputStream is = url.openStream();
-            JsonReader reader = Json.createReader(is);
-            JsonObject obj = reader.readObject();
-            // Récupération du niveau résultats contenant les générations aléatoires
-            JsonArray results = obj.getJsonArray("results");
+				// Génération du Json
+				URL url = new URL("https://randomuser.me/api/?inc=gender,name,dob,email,phone&results=" + numbertemp);
+				InputStream is = url.openStream();
+				JsonReader reader = Json.createReader(is);
+				JsonObject obj = reader.readObject();
+				// Récupération du niveau résultats contenant les générations aléatoires
+				JsonArray results = obj.getJsonArray("results");
 
-            // Récupération du niveau infos pour récupérer la taille du jeu de données
-            JsonObject info = obj.getJsonObject("info");
-            JsonValue sizeValue = info.get("results");
-            int size = Integer.parseInt(sizeValue.toString());
+				// Récupération du niveau infos pour récupérer la taille du jeu de données
+				JsonObject info = obj.getJsonObject("info");
+				JsonValue sizeValue = info.get("results");
+				int size = Integer.parseInt(sizeValue.toString());
 
-            // Eléments pour la récupération des données brutes
-            JsonValue result;
-            JsonObject person;
-            String firstName, lastName, dob, email, phone;
+				// Eléments pour la récupération des données brutes
+				JsonValue result;
+				JsonObject person;
+				String firstName, lastName, dob, email, phone;
 
-            for (int i = 0; i < size; i++) {
-                // Récupération de la personne X dans les résultats
-                result = results.get(i);
-                reader = Json.createReader(new StringReader(result.toString()));
-                person = reader.readObject();
+				for (int i = 0; i < size; i++) {
+					// Récupération de la personne X dans les résultats
+					result = results.get(i);
+					reader = Json.createReader(new StringReader(result.toString()));
+					person = reader.readObject();
 
-                // Récupération des données concernant la personne X
-                String gender = person.get("gender").toString().substring(1, 5).equals("male") ? "Men" : "Women";
-                dob = person.get("dob").toString();
-                email = person.get("email").toString();
-                phone = person.get("phone").toString();
-                firstName = Json.createReader(new StringReader(person.get("name").toString())).readObject().get("first").toString();
-                lastName = Json.createReader(new StringReader(person.get("name").toString())).readObject().get("last").toString();
-
-
-                PreparedStatement insertPerson = null;
-                String insert = "INSERT INTO personData(first_name,last_name,gender,birthday,email,phone) " +
-                        "VALUES(?,?,?,?,?,?)";
-
-                    con = dataSource.getConnection();
-
-                    PreparedStatement pstmt = con.prepareStatement(insert); // Initialise la requête
-                    // Adapte la requête
-                    pstmt.setString(1,firstName);
-                    pstmt.setString(2,lastName);
-                    pstmt.setString(3,gender);
-                    pstmt.setString(4,dob);
-                    pstmt.setString(5,email);
-                    pstmt.setString(6,phone);
-                    pstmt.executeUpdate();
-            }
-            number -= numbertemp;
-            System.out.println("final " + listPeople.size());
-
-        }
-        con.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(Person.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+					// Récupération des données concernant la personne X
+					String gender = person.get("gender").toString().substring(1, 5).equals("male") ? "Men" : "Women";
+					dob = person.get("dob").toString();
+					email = person.get("email").toString();
+					phone = person.get("phone").toString();
+					firstName = Json.createReader(new StringReader(person.get("name").toString())).readObject().get("first").toString();
+					lastName = Json.createReader(new StringReader(person.get("name").toString())).readObject().get("last").toString();
 
 
-    public List getListPeople() {
-        System.out.println("list " + listPeople.size());
-        return listPeople;
-    }
+					PreparedStatement insertPerson = null;
+					String insert = "INSERT INTO personData(first_name,last_name,gender,birthday,email,phone) " +
+							"VALUES(?,?,?,?,?,?)";
 
-    @Override
-    public List<Person> findAllPerson() {
+					con = dataSource.getConnection();
 
-        listPeople = new ArrayList<>();
+					PreparedStatement pstmt = con.prepareStatement(insert); // Initialise la requête
+					// Adapte la requête
+					pstmt.setString(1,firstName);
+					pstmt.setString(2,lastName);
+					pstmt.setString(3,gender);
+					pstmt.setString(4,dob);
+					pstmt.setString(5,email);
+					pstmt.setString(6,phone);
+					pstmt.executeUpdate();
+				}
+				number -= numbertemp;
+				System.out.println("final " + listPeople.size());
 
-        try {
-            Connection connection = dataSource.getConnection();
-            System.out.println("Schéma: " + connection.getSchema());
-            System.out.println("Catalog: " + connection.getCatalog());
-            PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM personData");
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                String firstName = rs.getString("first_name");
-                String lastName = rs.getString("last_name");
-                Gender gender = rs.getString("gender").equals("male") ? Gender.Men : Gender.Women;
-                String dob = rs.getString("birthday");
-                String email = rs.getString("email");
-                String phone = rs.getString("phone");
-                long id = rs.getLong("person_id");
+			}
+			con.close();
+		} catch (SQLException ex) {
+			Logger.getLogger(Person.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
 
-                listPeople.add(new Person(gender, firstName + " " + lastName, dob, email, phone));
-            }
-            connection.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(Person.class.getName()).log(Level.SEVERE, null, ex);
-        }
+	public List getListPeople()
+	{
+		System.out.println("list " + listPeople.size());
+		return listPeople;
+	}
 
-        return listPeople;
+	@Override
+	public List<Person> findAllPerson()
+	{
 
-    }
+		listPeople = new ArrayList<>();
+
+		try
+		{
+			Connection connection = dataSource.getConnection();
+			System.out.println("Schéma: " + connection.getSchema());
+			System.out.println("Catalog: " + connection.getCatalog());
+			PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM personData");
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next())
+			{
+				String firstName = rs.getString("first_name");
+				String lastName = rs.getString("last_name");
+				Gender gender = rs.getString("gender").equals("male") ? Gender.Men : Gender.Women;
+				String dob = rs.getString("birthday");
+				String email = rs.getString("email");
+				String phone = rs.getString("phone");
+				long id = rs.getLong("person_id");
+
+				listPeople.add(new Person(gender, firstName, lastName, dob, email, phone));
+			}
+			connection.close();
+		}
+		catch (SQLException ex)
+		{
+			Logger.getLogger(Person.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+		return listPeople;
+
+	}
+
+	public void addPerson(Gender gender, String firstName, String lastName, String dob, String email, String phone)
+	{
+		listPeople.add(new Person(gender, firstName, lastName, dob, email, phone));
+	}
+
+	public void addPerson(Person person)
+	{
+		listPeople.add(person);
+	}
+
+	public String deletePerson(int id)
+	{
+		//
+		String status;
+		//TODO DELETE IN DATABASE
+		status = "The person has been deleted";
+		return status;
+	}
 }
