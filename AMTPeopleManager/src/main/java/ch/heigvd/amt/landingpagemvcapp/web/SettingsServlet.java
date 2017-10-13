@@ -1,6 +1,7 @@
 package ch.heigvd.amt.landingpagemvcapp.web;
 
 import ch.heigvd.amt.landingpagemvcapp.services.PersonManager;
+import ch.heigvd.amt.landingpagemvcapp.services.PersonManagerLocal;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -17,7 +18,7 @@ import java.io.IOException;
 public class SettingsServlet extends HttpServlet
 {
 	@EJB
-	PersonManager personManager;
+	PersonManagerLocal personManager;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{

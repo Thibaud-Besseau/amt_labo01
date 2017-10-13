@@ -2,7 +2,7 @@ package ch.heigvd.amt.landingpagemvcapp.web;
 
 import ch.heigvd.amt.landingpagemvcapp.model.Person;
 import ch.heigvd.amt.landingpagemvcapp.services.PersonManager;
-import org.json.JSONException;
+import ch.heigvd.amt.landingpagemvcapp.services.PersonManagerLocal;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -20,7 +20,7 @@ import java.util.List;
 public class PersonServlet extends HttpServlet
 {
 	@EJB
-	PersonManager personManager ;
+	PersonManagerLocal personManager ;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
@@ -40,11 +40,10 @@ public class PersonServlet extends HttpServlet
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			  throws ServletException, IOException {
 
-
-		//get list
-		List<Person> list = personManager.getListPeople();
-		request.setAttribute("dataPeople", list);
-		request.getRequestDispatcher("/WEB-INF/pages/PeopleList.jsp").forward(request,response);
+		response.setContentType("text/html:charset=UTF-8");
+		List<Person> list = personManager.findAllPerson();
+		request.setAttribute("dataPeople",list);
+		this.getServletContext().getRequestDispatcher("/WEB-INF/pages/PeopleList.jsp").forward(request,response);
 	}
 
 

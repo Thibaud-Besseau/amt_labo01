@@ -29,7 +29,8 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20170516</version>
+
+            <version>20090211</version>
         </dependency>
 
     </dependencies>
@@ -83,5 +84,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
