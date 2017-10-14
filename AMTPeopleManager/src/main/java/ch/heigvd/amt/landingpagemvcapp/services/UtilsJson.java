@@ -54,18 +54,23 @@ public class UtilsJson {
         return person.get("gender").toString().substring(1, 5);
     }
     public static String getDoB(){
-        return person.get("dob").toString();
+        String dob = person.get("dob").toString();
+        return dob.substring(1,dob.length()-1);
     }
     public static String getEmail(){
-        return person.get("email").toString();
+        String email = person.get("email").toString();
+        return email.substring(1,email.length()-1);
     }
     public static String getPhone(){
-        return person.get("phone").toString();
+        String phone= person.get("phone").toString();
+        return phone.substring(1,phone.length()-1);
     }
     public static String getFirstName(){
-        return Json.createReader(new StringReader(person.get("name").toString())).readObject().get("first").toString();
+        String firstName = Json.createReader(new StringReader(person.get("name").toString())).readObject().get("first").toString();
+        return firstName.substring(1,firstName.length()-1);
     }
     public static String getLastName(){
-        return Json.createReader(new StringReader(person.get("name").toString())).readObject().get("last").toString();
+        String lastName = Json.createReader(new StringReader(person.get("name").toString())).readObject().get("last").toString();
+        return lastName.substring(1,lastName.length()-1);
     }
 }

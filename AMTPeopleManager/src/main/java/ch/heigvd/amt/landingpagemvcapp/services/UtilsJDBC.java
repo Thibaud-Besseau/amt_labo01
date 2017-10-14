@@ -13,4 +13,6 @@ public class UtilsJDBC {
 
     public static String selectToDbWithID = "SELECT * FROM personData WHERE ? = personData.person_id";
 
+    public static String seletToDbAll = "SELECT * FROM personData";
+
 }

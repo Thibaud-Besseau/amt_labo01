@@ -22,8 +22,7 @@ public class PersonManager implements PersonManagerLocal
 {
 
 	protected List<Person> listPeople = new ArrayList();
-	int id;
-	final int MAX_USER_API = 5000;
+	final int MAX_USER_API = 1000;
 
 	// JDBC Acces
 	@Resource(lookup = "java:/jdbc/person")
@@ -43,7 +42,7 @@ public class PersonManager implements PersonManagerLocal
 		try {
 			while (number != 0) {
 				if (number > MAX_USER_API) {
-					numbertemp = 5000;
+					numbertemp = MAX_USER_API;
 				} else {
 					numbertemp = number;
 				}
@@ -59,7 +58,7 @@ public class PersonManager implements PersonManagerLocal
 
 				// Préparation de la requête : Ajout des personnes par bloque
 				for (int i = 0; i < size; i++) {
-					UtilsJson.initNext(i);
+					UtilsJson.initNext(i); // Actualise l'objet sélectionné dans le tableau Json
 
 					pstmt.setString(1,UtilsJson.getFirstName());
 					pstmt.setString(2,UtilsJson.getLastName());
@@ -71,9 +70,9 @@ public class PersonManager implements PersonManagerLocal
 				}
 				// Exécution de la requête
 				pstmt.executeBatch();
-
 				number -= numbertemp;
 			}
+			// Fin de connexion
 			con.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(Person.class.getName()).log(Level.SEVERE, null, ex);
@@ -89,28 +88,31 @@ public class PersonManager implements PersonManagerLocal
 	@Override
 	public List<Person> findAllPerson()
 	{
-
+		// Liste retournée contenant les personnes en BD
 		listPeople = new ArrayList<>();
-
 		try
 		{
+			// Connexion
 			Connection connection = dataSource.getConnection();
-			System.out.println("Schéma: " + connection.getSchema());
-			System.out.println("Catalog: " + connection.getCatalog());
-			PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM personData");
+
+			PreparedStatement pstmt = connection.prepareStatement(UtilsJDBC.seletToDbAll);
 			ResultSet rs = pstmt.executeQuery();
+
+			// Pour chaque personne en DB
 			while (rs.next())
 			{
+				// Récupérer les informations
 				String firstName = rs.getString("first_name");
 				String lastName = rs.getString("last_name");
 				Gender gender = rs.getString("gender").equals("male") ? Gender.Men : Gender.Women;
 				String dob = rs.getString("birthday");
 				String email = rs.getString("email");
 				String phone = rs.getString("phone");
-				long id = rs.getLong("person_id");
+				int id = rs.getInt("person_id");
 
-				listPeople.add(new Person(gender, firstName, lastName, dob, email, phone));
+				listPeople.add(new Person(id, gender, firstName, lastName, dob, email, phone));
 			}
+			// Fin de connexion
 			connection.close();
 		}
 		catch (SQLException ex)
