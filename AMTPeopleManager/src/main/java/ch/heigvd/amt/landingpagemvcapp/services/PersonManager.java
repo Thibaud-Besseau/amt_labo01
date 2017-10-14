@@ -4,12 +4,9 @@ import ch.heigvd.amt.landingpagemvcapp.model.Enums.Gender;
 import ch.heigvd.amt.landingpagemvcapp.model.Person;
 
 import javax.annotation.Resource;
-import javax.ejb.Singleton;
 import javax.ejb.Stateless;
 import javax.json.*;
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.Connection;
@@ -39,7 +36,9 @@ public class PersonManager implements PersonManagerLocal
 		//clear the old list
 		listPeople.clear();
 		System.out.println(listPeople.size());
-		Connection con= null;
+
+		// Connexion JDBC
+		Connection con = null;
 
 		try {
 			while (number != 0) {
@@ -49,58 +48,31 @@ public class PersonManager implements PersonManagerLocal
 					numbertemp = number;
 				}
 
-				// Génération du Json
-				URL url = new URL("https://randomuser.me/api/?inc=gender,name,dob,email,phone&results=" + numbertemp);
-				InputStream is = url.openStream();
-				JsonReader reader = Json.createReader(is);
-				JsonObject obj = reader.readObject();
-				// Récupération du niveau résultats contenant les générations aléatoires
-				JsonArray results = obj.getJsonArray("results");
+				// Récupération du Json via l'url (voir classe UtilsJson)
+				JsonArray results = UtilsJson.getJson(numbertemp);
+				int size = UtilsJson.getSize();
 
-				// Récupération du niveau infos pour récupérer la taille du jeu de données
-				JsonObject info = obj.getJsonObject("info");
-				JsonValue sizeValue = info.get("results");
-				int size = Integer.parseInt(sizeValue.toString());
+				// Etablissement de la connexion
+				con = dataSource.getConnection();
+				// Prépration de la requête
+				PreparedStatement pstmt = con.prepareStatement(UtilsJDBC.insertToDB);
 
-				// Eléments pour la récupération des données brutes
-				JsonValue result;
-				JsonObject person;
-				String firstName, lastName, dob, email, phone;
-
+				// Préparation de la requête : Ajout des personnes par bloque
 				for (int i = 0; i < size; i++) {
-					// Récupération de la personne X dans les résultats
-					result = results.get(i);
-					reader = Json.createReader(new StringReader(result.toString()));
-					person = reader.readObject();
+					UtilsJson.initNext(i);
 
-					// Récupération des données concernant la personne X
-					String gender = person.get("gender").toString().substring(1, 5).equals("male") ? "Men" : "Women";
-					dob = person.get("dob").toString();
-					email = person.get("email").toString();
-					phone = person.get("phone").toString();
-					firstName = Json.createReader(new StringReader(person.get("name").toString())).readObject().get("first").toString();
-					lastName = Json.createReader(new StringReader(person.get("name").toString())).readObject().get("last").toString();
-
-
-					PreparedStatement insertPerson = null;
-					String insert = "INSERT INTO personData(first_name,last_name,gender,birthday,email,phone) " +
-							"VALUES(?,?,?,?,?,?)";
-
-					con = dataSource.getConnection();
-
-					PreparedStatement pstmt = con.prepareStatement(insert); // Initialise la requête
-					// Adapte la requête
-					pstmt.setString(1,firstName);
-					pstmt.setString(2,lastName);
-					pstmt.setString(3,gender);
-					pstmt.setString(4,dob);
-					pstmt.setString(5,email);
-					pstmt.setString(6,phone);
-					pstmt.executeUpdate();
+					pstmt.setString(1,UtilsJson.getFirstName());
+					pstmt.setString(2,UtilsJson.getLastName());
+					pstmt.setString(3,UtilsJson.getGender());
+					pstmt.setString(4,UtilsJson.getDoB());
+					pstmt.setString(5,UtilsJson.getEmail());
+					pstmt.setString(6,UtilsJson.getPhone());
+					pstmt.addBatch();
 				}
-				number -= numbertemp;
-				System.out.println("final " + listPeople.size());
+				// Exécution de la requête
+				pstmt.executeBatch();
 
+				number -= numbertemp;
 			}
 			con.close();
 		} catch (SQLException ex) {
