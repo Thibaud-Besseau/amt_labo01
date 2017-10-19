@@ -25,96 +25,133 @@ import java.util.Map;
 @WebServlet(name = "PersonActionServlet", urlPatterns = {"/person-action"})
 public class PersonActionServlet extends HttpServlet
 {
-	@EJB
-	PersonManagerLocal personManager;
+    @EJB
+    PersonManagerLocal personManager;
 
-	public static final String ERRORS = "errors";
-	public static final String RESULT = "result";
+    public static final String ERRORS = "errors";
+    public static final String RESULT = "result";
 
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	{
-		System.out.println("POST");
-		Map<String, String> errors = new HashMap<String, String>();
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+        Map<String, String> errors = new HashMap<String, String>();
 
-		PersonForm form = new PersonForm();
-		Person person = form.addPerson( request );
-
-		if (form.getErrors().size() == 0)
-		{
-			personManager.addPerson(person);
-			List<Person> list = personManager.getListPeople();
-			System.out.println(list.size());
-			request.setAttribute("dataPeople", list);
-			this.getServletContext().getRequestDispatcher("/WEB-INF/pages/PeopleList.jsp").forward(request, response);
-		}
-		else
-		{
-			request.setAttribute( "form", form );
-			System.out.println(form.getErrors().get("phoneUser"));
-			this.getServletContext().getRequestDispatcher("/WEB-INF/pages/person-form.jsp").forward(request, response);
-		}
+        String id = request.getParameter("id");
+        String action = request.getParameter("action");
+        String status;
 
 
+        PersonForm form = new PersonForm();
+        Person person = form.addPerson(request);
 
-        /* Transmission de la paire d'objets request/response à notre JSP */
+        if (form.getErrors().size() == 0)
+        {
+            System.out.println("ACTION :"+action);
+            if (action != null && action.equals("edit"))
+            {
+                person.setId(Integer.parseInt(id));
+                status= personManager.editPerson(person);
 
-	}
-
-
-	/**
-	 * Handles the HTTP <code>GET</code> method.
-	 *
-	 * @param request  servlet request
-	 * @param response servlet response
-	 * @throws ServletException if a servlet-specific error occurs
-	 * @throws IOException      if an I/O error occurs
-	 */
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			  throws ServletException, IOException
-	{
-
-		String[] genderList = new String[2];
-		genderList[0] = Gender.Men.toString();
-		genderList[1] = Gender.Women.toString();
-
-		request.setAttribute("genderList", genderList);
-
-		String action = request.getParameter("action");
-		//test if user creation is needed
-		System.out.println(action);
-		if (action.equals("add"))
-		{
-			this.getServletContext().getRequestDispatcher("/WEB-INF/pages/person-form.jsp").forward(request, response);
-		}
-		else if (action.equals("edit"))
-		{
-			//TODO EDIT
-			List<Person> list = personManager.getListPeople();
-			request.setAttribute("dataPeople", list);
-			this.getServletContext().getRequestDispatcher("/WEB-INF/pages/person-form.jsp").forward(request, response);
-
-		}
-		else
-		{
-			//get list
-			List<Person> list = personManager.getListPeople();
-			request.setAttribute("dataPeople", list);
-			this.getServletContext().getRequestDispatcher("/WEB-INF/pages/PeopleList.jsp").forward(request, response);
-		}
-	}
+            }
+            else
+            {
+                status= personManager.addPerson(person);
+            }
+            request.setAttribute("status", status);
+            List<Person> list = personManager.getListPeople();
+            request.setAttribute("dataPeople", list);
+            this.getServletContext().getRequestDispatcher("/WEB-INF/pages/PeopleList.jsp").forward(request, response);
+        }
+        else
+        {
+            String[] genderList = new String[2];
+            genderList[0] = Gender.Men.toString();
+            genderList[1] = Gender.Women.toString();
+            request.setAttribute("genderList", genderList);
+            request.setAttribute("form", form);
+            this.getServletContext().getRequestDispatcher("/WEB-INF/pages/person-form.jsp").forward(request, response);
+        }
+    }
 
 
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request  servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException      if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException
+    {
 
-	/**
-	 * Returns a short description of the servlet.
-	 *
-	 * @return a String containing servlet description
-	 */
-	@Override
-	public String getServletInfo()
-	{
-		return "Short description";
-	}// </editor-fold>
+        String[] genderList = new String[2];
+        genderList[0] = Gender.Men.toString();
+        genderList[1] = Gender.Women.toString();
+
+        request.setAttribute("genderList", genderList);
+
+        String action = request.getParameter("action");
+        //test if user creation is needed
+        System.out.println(action);
+        if (action.equals("add"))
+        {
+            this.getServletContext().getRequestDispatcher("/WEB-INF/pages/person-form.jsp").forward(request, response);
+        }
+        else if (action.equals("edit"))
+        {
+
+            String id = request.getParameter("id");
+            Person person = personManager.getPerson(Integer.parseInt(id));
+
+            if (person == null)
+            {
+                List<Person> list = personManager.getListPeople();
+                request.setAttribute("dataPeople", list);
+                request.setAttribute("status", "Error: Incorrect id");
+                this.getServletContext().getRequestDispatcher("/WEB-INF/pages/PeopleList.jsp").forward(request, response);
+            }
+
+            request.setAttribute("person", person);
+            request.setAttribute("action", action);
+            request.setAttribute("id", id);
+            this.getServletContext().getRequestDispatcher("/WEB-INF/pages/person-form.jsp?action=edit&id=" + id).forward(request, response);
+
+        }
+        else if (action.equals("delete"))
+        {
+            String id = request.getParameter("id");
+            System.out.println("delete");
+            String status = personManager.deletePerson(Integer.parseInt(id));
+            request.setAttribute("status", status);
+
+            System.out.println(status);
+
+            //get list
+            List<Person> list = personManager.getListPeople();
+            request.setAttribute("dataPeople", list);
+            this.getServletContext().getRequestDispatcher("/WEB-INF/pages/PeopleList.jsp").forward(request, response);
+        }
+        else
+        {
+            //get list
+            List<Person> list = personManager.getListPeople();
+            request.setAttribute("dataPeople", list);
+            this.getServletContext().getRequestDispatcher("/WEB-INF/pages/PeopleList.jsp").forward(request, response);
+        }
+    }
+
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo()
+    {
+        return "Short description";
+    }// </editor-fold>
 }

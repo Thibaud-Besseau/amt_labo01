@@ -30,8 +30,8 @@ public class PersonForm
 	public Person addPerson(HttpServletRequest request )
 	{
 		String gender = getValueInput( request, GENDER_INPUT );
-		String firstName = getValueInput( request, LAST_NAME_INPUT );
-		String lastName = getValueInput( request, FIRST_NAME_INPUT );
+		String firstName = getValueInput( request, FIRST_NAME_INPUT);
+		String lastName = getValueInput( request,  LAST_NAME_INPUT);
 		String email = getValueInput( request, EMAIL_INPUT );
 		String phone = getValueInput( request, PHONE_INPUT );
 		String birthday = getValueInput( request, BIRTHDAY_INPUT );
@@ -63,11 +63,11 @@ public class PersonForm
 		person.setFirstName( firstName );
 
 		try {
-			validateNotEmpty( lastName );
+			validateNotEmpty(lastName);
 		} catch ( Exception e ) {
 			setError( LAST_NAME_INPUT, e.getMessage() );
 		}
-		person.setLastName( lastName );
+		person.setLastName(lastName);
 
 
 		try {

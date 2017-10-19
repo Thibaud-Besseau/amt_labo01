@@ -32,39 +32,53 @@
     <div class="card card-register mx-auto mt-5">
       <div class="card-header">Person informations</div>
       <div class="card-body">
-        <form action="person-action" method=POST>
+        <c:choose>
+          <c:when test="${action=='edit'}">
+            <form action="person-action?action=${action}&id=${id}" method=POST>
+          </c:when>
+          <c:otherwise>
+            <form action="person-action?action=${action}" method=POST>
+          </c:otherwise>
+        </c:choose>
           <div class="form-group">
             <label for="genderUser">Gender</label>
               <select class="form-control" name="genderUser" id="Gender" type="text" value="<c:out value="${param.genderUser}"/>" required="true">
                   <option value="${genderList[0]}">${genderList[0]}</option>
+                <c:choose>
+                <c:when test="${person.gender=='Women'}">
+                  <option selected value="${genderList[1]}">${genderList[1]}</option>
+                </c:when>
+                <c:otherwise>
                   <option value="${genderList[1]}">${genderList[1]}</option>
+                </c:otherwise>
+                </c:choose>
               </select>
             <span class="error">${form.errors['genderUser']}</span>
               <br>
 
             <label for="firstNameUser">First Name</label>
-            <input class="form-control" name="firstNameUser" id="firstName" type="text" value="<c:out value="${param.firstNameUser}"/>"  aria-describedby="Number User" placeholder="First Name" required="true">
+            <input class="form-control" name="firstNameUser" id="firstName" type="text" value="<c:out value="${person.firstName}${param.firstNameUser}"/>"  aria-describedby="Number User" placeholder="First Name" required="true">
             <span class="error">${form.errors['firstNameUser']}</span>
               <br>
 
 
             <label for="lastNameUser">Last Name</label>
-            <input class="form-control" name="lastNameUser" id="lastName" type="text" value="<c:out value="${param.lastNameUser}"/>"  aria-describedby="Number User" placeholder="Last Name" required="true">
+            <input class="form-control" name="lastNameUser" id="lastName" type="text" value="<c:out value="${person.lastName}${param.lastNameUser}"/>"  aria-describedby="Number User" placeholder="Last Name" required="true">
             <span class="error">${form.errors['lastNameUser']}</span>
               <br>
 
             <label for="birthdayUser">Birthday</label>
-            <input class="form-control" name="birthdayUser" id="birthday" type="date" value="<c:out value="${param.birthdayUser}"/>"  aria-describedby="Number User" placeholder="Birthday" required="true">
+            <input class="form-control" name="birthdayUser" id="birthday" type="date" value="<c:out value="${person.birthday}${param.birthdayUser}"/>"  aria-describedby="Number User" placeholder="Birthday" required="true">
             <span class="error">${form.errors['birthdayUser']}</span>
               <br>
 
             <label for="emailUser">Email</label>
-            <input class="form-control" name="emailUser" id="email" type="email" value="<c:out value="${param.emailUser}"/>"  aria-describedby="Number User" placeholder="Email" required="true">
+            <input class="form-control" name="emailUser" id="email" type="email" value="<c:out value="${person.email}${param.emailUser}"/>"  aria-describedby="Number User" placeholder="Email" required="true">
             <span class="error">${form.errors['emailUser']}</span>
               <br>
 
             <label for="phoneUser">Phone</label>
-            <input class="form-control" name="phoneUser" id="phone" type="text" value="<c:out value="${param.phoneUser}"/>" aria-describedby="Number User" placeholder="Phone" required="true">
+            <input class="form-control" name="phoneUser" id="phone" type="text" value="<c:out value="${person.phone}${param.phoneUser}"/>" aria-describedby="Number User" placeholder="Phone" required="true">
             <span class="error">${form.errors['phoneUser']}</span>
               <br>
 

@@ -6,12 +6,12 @@ public class UtilsJDBC {
     public static String insertToDB = "INSERT INTO personData(first_name,last_name,gender,birthday,email,phone) " +
             "VALUES(?,?,?,?,?,?)";
 
-    public static String updateToDB = "UPDATE personData SET person_id = ?, first_name = ?, last_name = ?," +
+    public static String updateToDB = "UPDATE personData SET first_name = ?, last_name = ?," +
             " gender = ?, birthday = ? , email = ? ,phone = ? WHERE ? = personData.person_id";
 
-    public static String removeToDB = "DELETE FROM personData WHERE ? = personData.person_id";
+    public static String removeToDB = "DELETE FROM personData WHERE person_id = ?";
 
-    public static String selectToDbWithID = "SELECT * FROM personData WHERE ? = personData.person_id";
+    public static String selectToDbWithID = "SELECT * FROM personData WHERE person_id = ?";
 
     public static String seletToDbAll = "SELECT * FROM personData";
 

@@ -97,8 +97,8 @@
                         <tfoot>
                         <tr>
                             <th>Gender</th>
-                            <th>Last Name</th>
                             <th>First Name</th>
+                            <th>Last Name</th>
                             <th>Birthday</th>
                             <th>Email</th>
                             <th>Phone</th>
@@ -117,12 +117,16 @@
                                 <td>    ${person.phone} </td>
                                 <td>
 
-                                    <button class="btn-flat circle greenButton ">
+                                    <a  href='person-action?action=edit&id=${person.id}'
+                                        class="btn-flat circle greenButton">
                                         <span style="margin:auto" style="display:table"
-                                          class="fa fa-fw fa-edit"></span></button>
-                                    <button class="btn-flat circle greenButton ">
+                                              class="fa fa-fw fa-edit"></span>
+                                    </a>
+                                    <a  href='person-action?action=delete&id=${person.id}'
+                                        class="btn-flat circle greenButton">
                                         <span style="margin:auto" style="display:table"
-                                              class="fa fa-fw fa-remove"></span></button>
+                                              class="fa fa-fw fa-remove"></span>
+                                    </a>
                                 </td>
                             </tr>
                         </c:forEach>
