@@ -58,8 +58,6 @@ public class PersonActionServlet extends HttpServlet
                 status= personManager.addPerson(person);
             }
             request.setAttribute("status", status);
-            List<Person> list = personManager.getListPeople();
-            request.setAttribute("dataPeople", list);
             this.getServletContext().getRequestDispatcher("/WEB-INF/pages/PeopleList.jsp").forward(request, response);
         }
         else
@@ -108,8 +106,6 @@ public class PersonActionServlet extends HttpServlet
 
             if (person == null)
             {
-                List<Person> list = personManager.getListPeople();
-                request.setAttribute("dataPeople", list);
                 request.setAttribute("status", "Error: Incorrect id");
                 this.getServletContext().getRequestDispatcher("/WEB-INF/pages/PeopleList.jsp").forward(request, response);
             }
@@ -128,17 +124,10 @@ public class PersonActionServlet extends HttpServlet
             request.setAttribute("status", status);
 
             System.out.println(status);
-
-            //get list
-            List<Person> list = personManager.getListPeople();
-            request.setAttribute("dataPeople", list);
             this.getServletContext().getRequestDispatcher("/WEB-INF/pages/PeopleList.jsp").forward(request, response);
         }
         else
         {
-            //get list
-            List<Person> list = personManager.getListPeople();
-            request.setAttribute("dataPeople", list);
             this.getServletContext().getRequestDispatcher("/WEB-INF/pages/PeopleList.jsp").forward(request, response);
         }
     }

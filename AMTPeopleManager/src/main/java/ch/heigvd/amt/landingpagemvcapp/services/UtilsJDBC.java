@@ -15,4 +15,8 @@ public class UtilsJDBC {
 
     public static String seletToDbAll = "SELECT * FROM personData";
 
+    public static String seletToDbAllWithLimit = "SELECT * FROM personData ORDER BY ? ? LIMIT ?, ?";
+
+    public static String countToDbAll = "SELECT COUNT(*) FROM personData";
+
 }

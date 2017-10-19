@@ -28,6 +28,9 @@
     <link href="css/sb-admin.css" rel="stylesheet">
 </head>
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
+<script type="text/javascript">
+    var path = '${pageContext.request.contextPath}';
+</script>
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     <a class="navbar-brand" href="index.html">AMT Labo 01</a>
@@ -106,31 +109,6 @@
                         </tr>
                         </tfoot>
                         <tbody>
-                        <c:forEach items="${dataPeople}" var="person">
-                            <tr>
-
-                                <td>    ${person.gender} </td>
-                                <td>    ${person.firstName}  </td>
-                                <td>    ${person.lastName} </td>
-                                <td>    ${person.birthday} </td>
-                                <td>    ${person.email} </td>
-                                <td>    ${person.phone} </td>
-                                <td>
-
-                                    <a  href='person-action?action=edit&id=${person.id}'
-                                        class="btn-flat circle greenButton">
-                                        <span style="margin:auto" style="display:table"
-                                              class="fa fa-fw fa-edit"></span>
-                                    </a>
-                                    <a  href='person-action?action=delete&id=${person.id}'
-                                        class="btn-flat circle greenButton">
-                                        <span style="margin:auto" style="display:table"
-                                              class="fa fa-fw fa-remove"></span>
-                                    </a>
-                                </td>
-                            </tr>
-                        </c:forEach>
-
                         </tbody>
                     </table>
                 </div>

@@ -2,10 +2,13 @@ package ch.heigvd.amt.landingpagemvcapp.services;
 
 import ch.heigvd.amt.landingpagemvcapp.model.Enums.Gender;
 import ch.heigvd.amt.landingpagemvcapp.model.Person;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import javax.ejb.Local;
+import javax.servlet.http.HttpServletRequest;
 
 @Local
 public interface PersonManagerLocal {
@@ -18,5 +21,7 @@ public interface PersonManagerLocal {
     String deletePerson(int id);
     Person getPerson(int id);
     String editPerson(Person person);
+    int getTotalPeople();
+    JSONObject getAllPeople(int totalRecords, String columName , String direction, int initial, int recordSize, HttpServletRequest request)throws SQLException, ClassNotFoundException;
 
 }

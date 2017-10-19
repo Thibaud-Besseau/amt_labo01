@@ -2,6 +2,8 @@ package ch.heigvd.amt.landingpagemvcapp.services;
 
 import ch.heigvd.amt.landingpagemvcapp.model.Enums.Gender;
 import ch.heigvd.amt.landingpagemvcapp.model.Person;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
@@ -17,6 +19,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 @Stateless
@@ -146,6 +149,7 @@ public class PersonManager implements PersonManagerLocal
 
 				listPeople.add(new Person(id, gender, firstName, lastName, dob, email, phone));
 			}
+			rs.close();
 			connection.close();
 		}
 		catch (SQLException ex)
@@ -255,6 +259,8 @@ public class PersonManager implements PersonManagerLocal
 			{
 				return null;
 			}
+			pstmt.close();
+			rs.close();
             connexion.close();
 
 
@@ -290,7 +296,8 @@ public class PersonManager implements PersonManagerLocal
             pstmt.setString(6,person.getPhone());
             pstmt.setInt(7,person.getId());
             pstmt.executeUpdate();
-            connexion.close();
+			pstmt.close();
+			connexion.close();
 
         }
         catch (SQLException e)
@@ -303,4 +310,95 @@ public class PersonManager implements PersonManagerLocal
         return "The person has been edited";
 
     }
+
+	@Override
+	public int getTotalPeople()
+	{
+		// Connexion JDBC
+		Connection connexion = null;
+		int total=0;
+
+		try
+		{
+			// Connexion
+			connexion = dataSource.getConnection();
+			PreparedStatement pstmt = connexion.prepareStatement(UtilsJDBC.countToDbAll);
+			ResultSet rs = pstmt.executeQuery();
+			rs.next();
+			total=Integer.parseInt(rs.getString("COUNT(*)"));
+			connexion.close();
+
+		}
+		catch (SQLException e)
+		{
+			return total;
+		}
+
+		return total;
+	}
+
+	public JSONObject getAllPeople(int totalRecords, String columName ,String direction,int initial, int recordSize, HttpServletRequest request)
+			throws SQLException, ClassNotFoundException {
+
+		int totalAfterSearch = totalRecords;
+		JSONObject result = new JSONObject();
+		JSONArray array = new JSONArray();
+		String searchSQL = "";
+
+		// Connexion
+		Connection connexion = null;
+		connexion = dataSource.getConnection();
+
+
+		PreparedStatement pstmt = connexion.prepareStatement(UtilsJDBC.seletToDbAllWithLimit);
+
+
+		System.out.println(columName+" , "+direction+" , "+initial+" , "+recordSize);
+
+		pstmt.setString(1,columName);
+		pstmt.setString(2,direction);
+		pstmt.setInt(3,initial);
+		pstmt.setInt(4,recordSize);
+
+		//for searching
+		ResultSet rs = pstmt.executeQuery();
+
+		while (rs.next()) {
+			JSONArray jsonArray = new JSONArray();
+            // Add the informations into the JSON array
+            jsonArray.put(rs.getString("gender").equals("Men") ? Gender.Men : Gender.Women);
+            jsonArray.put(rs.getString("first_name"));
+			jsonArray.put(rs.getString("last_name"));
+			jsonArray.put(rs.getString("birthday"));
+			jsonArray.put(rs.getString("email"));
+            System.out.println(rs.getString("email"));
+
+            jsonArray.put(rs.getString("phone"));
+
+
+			//add the button to edit or delete in the json
+			String actions=  "<a  href='person-action?action=edit&id=";
+			actions+=rs.getString("person_id")+"' class='btn-flat circle greenButton'> <span style='margin:auto' style='display:table'	class='fa fa-fw fa-edit'></span></a>";
+			actions+="<a  href='person-action?action=delete&id=";
+			actions+=rs.getString("person_id")+"' class='btn-flat circle greenButton'> <span style='margin:auto' style='display:table' class='fa fa-fw fa-remove'></span></a>";
+
+			jsonArray.put(actions);
+			array.put(jsonArray);
+		}
+        rs.close();
+        pstmt.close();
+
+		connexion.close();
+		try {
+			result.put("data", array);
+			result.put("iTotalRecords", totalRecords);
+			result.put("iTotalDisplayRecords", totalAfterSearch);
+
+		} catch (Exception e) {
+
+		}
+
+		return result;
+	}
 }
+//TODO 		pstmt.close();
