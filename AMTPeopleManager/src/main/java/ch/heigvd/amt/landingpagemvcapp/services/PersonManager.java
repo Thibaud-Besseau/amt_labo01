@@ -306,18 +306,59 @@ public class PersonManager implements PersonManagerLocal {
         return total;
     }
 
-    public JSONObject getAllPeople(int totalRecords, String columName, String direction, int initial, int recordSize, HttpServletRequest request)
+    @Override
+    public int getNumberPeopleSearch(String searchInput) {
+        // Connexion JDBC
+        Connection connexion = null;
+        int total = 0;
+
+        try {
+            String SQLFormat = "SELECT COUNT(*) as 'total' FROM personData WHERE first_name LIKE '%" +searchInput+
+                    "%' "+"OR first_name LIKE '%" +searchInput+
+                    "%' "+"OR last_name LIKE '%" +searchInput+
+                    "%' "+"OR gender LIKE '%" +searchInput+
+                    "%' "+"OR birthday LIKE '%" +searchInput+
+                    "%' "+"OR email LIKE '%" +searchInput+
+                    "%' "+"OR phone LIKE '%" +searchInput+
+                    "%' ";
+            // Connexion
+            connexion = dataSource.getConnection();
+            PreparedStatement pstmt = connexion.prepareStatement(SQLFormat);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            total = Integer.parseInt(rs.getString("total"));
+            rs.close();
+            pstmt.close();
+            connexion.close();
+            System.out.println("connexion : " + connexion.isClosed() + "\nPstmt2 : " +
+                    pstmt.isClosed() + "\nrs : " + rs.isClosed());
+        } catch (SQLException e) {
+            System.out.println("Error : " + e.getMessage());
+            return total;
+        }
+
+        return total;
+    }
+
+    public JSONObject getAllPeople(int totalRecords, String columName, String direction, int initial, int recordSize, HttpServletRequest request, String searchInput)
             throws SQLException, ClassNotFoundException {
 
-        int totalAfterSearch = totalRecords;
+        int totalAfterSearch;
+        if(searchInput.isEmpty())
+        {
+            totalAfterSearch=totalRecords;
+        }
+        else
+        {
+            totalAfterSearch=getNumberPeopleSearch(searchInput);
+        }
         JSONObject result = new JSONObject();
         JSONArray array = new JSONArray();
-        String searchSQL = "";
 
         // Connexion
         Connection connexion = dataSource.getConnection();
 
-        PreparedStatement pstmt = connexion.prepareStatement(UtilsJDBC.selectToDbAllWithLimit(columName, direction));
+        PreparedStatement pstmt = connexion.prepareStatement(UtilsJDBC.selectToDbAllWithLimit(columName, direction, searchInput));
         pstmt.setInt(1, initial);
         pstmt.setInt(2, recordSize);
 

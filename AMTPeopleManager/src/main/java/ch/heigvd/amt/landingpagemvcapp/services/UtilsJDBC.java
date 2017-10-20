@@ -17,8 +17,27 @@ public class UtilsJDBC {
 
     public static String countToDbAll = "SELECT COUNT(*) FROM personData";
 
-    public static String selectToDbAllWithLimit(String columName, String direction) {
-        String SQLFormat = "SELECT * FROM personData ORDER BY %s" + " %s " + " LIMIT ?, ?";
-        return String.format(SQLFormat, columName, direction);
+    public static String selectToDbAllWithLimit(String columName, String direction, String searchInput) {
+
+        if(searchInput.isEmpty())
+        {
+            String SQLFormat = "SELECT * FROM personData ORDER BY %s" + " %s " + " LIMIT ?, ?";
+            return String.format(SQLFormat, columName, direction);
+        }
+        else
+        {
+            String SQLFormat = "SELECT * FROM personData WHERE first_name LIKE '%" +searchInput+
+                    "%' "+"OR first_name LIKE '%" +searchInput+
+            "%' "+"OR last_name LIKE '%" +searchInput+
+                "%' "+"OR gender LIKE '%" +searchInput+
+                "%' "+"OR birthday LIKE '%" +searchInput+
+                "%' "+"OR email LIKE '%" +searchInput+
+                    "%' "+"OR phone LIKE '%" +searchInput+
+                    "%' "+"ORDER BY " +columName+ " " + direction+" LIMIT ?, ?";
+            System.out.println(SQLFormat);
+            return SQLFormat;
+        }
+
+
     }
 }

@@ -80,8 +80,10 @@ public class PeopleDataList extends HttpServlet
 
         String colName = COLUMS_NAME[column];
 
+        String searchInput = request.getParameter("sSearch");
+
         try {
-            jsonResult = personManager.getAllPeople(totalRecords, colName , dir, start,  listDisplayAmount,request);
+            jsonResult = personManager.getAllPeople(totalRecords, colName , dir, start,  listDisplayAmount,request, searchInput);
         } catch (ClassNotFoundException e)
         {
             e.printStackTrace();

@@ -31,5 +31,7 @@ public interface PersonManagerLocal {
 
     int getTotalPeople();
 
-    public JSONObject getAllPeople(int totalRecords, String columName, String direction, int initial, int recordSize, HttpServletRequest request) throws SQLException, ClassNotFoundException;
+    int getNumberPeopleSearch(String searchInput);
+
+    JSONObject getAllPeople(int totalRecords, String columName, String direction, int initial, int recordSize, HttpServletRequest request, String searchInput) throws SQLException, ClassNotFoundException;
 }
