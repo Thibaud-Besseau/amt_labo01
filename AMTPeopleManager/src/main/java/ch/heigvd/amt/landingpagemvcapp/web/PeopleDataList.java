@@ -53,8 +53,6 @@ public class PeopleDataList extends HttpServlet
         String colIndex = request.getParameter("iSortCol_0");
         String sortDirection = request.getParameter("sSortDir_0");
 
-
-
         if (pageNo != null) {
             start = Integer.parseInt(pageNo);
             if (start < 0) {
