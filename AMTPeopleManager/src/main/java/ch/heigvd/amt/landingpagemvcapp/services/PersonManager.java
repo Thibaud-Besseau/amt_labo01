@@ -25,10 +25,7 @@ import java.util.logging.Logger;
 @Stateless
 public class PersonManager implements PersonManagerLocal {
 
-    protected List<Person> listPeople = new ArrayList();
-    final int MAX_USER_API = 1000;
-    boolean modified = true;
-
+    final int MAX_USER_API = 5000;
     // JDBC Acces
     @Resource(lookup = "java:/jdbc/person")
     private DataSource dataSource;
@@ -37,16 +34,14 @@ public class PersonManager implements PersonManagerLocal {
         int numbertemp;
         String formattedDate = "";
 
-        //clear the old list
-        listPeople.clear();
-        System.out.println(listPeople.size());
-
         // Connexion JDBC
         Connection con = null;
         PreparedStatement pstmt = null;
+        int nbUserBeforeInsertion=0;
+
         try {
-            while (number != 0) {
                 if (number > MAX_USER_API) {
+                    nbUserBeforeInsertion= getTotalPeople();
                     numbertemp = MAX_USER_API;
                 } else {
                     numbertemp = number;
@@ -61,99 +56,88 @@ public class PersonManager implements PersonManagerLocal {
                 // Prépration de la requête
                 pstmt = con.prepareStatement(UtilsJDBC.insertToDB);
 
-                // Préparation de la requête : Ajout des personnes par bloque
-                for (int i = 0; i < size; i++) {
-                    UtilsJson.initNext(i); // Actualise l'objet sélectionné dans le tableau Json
+                //to optimize the time to fill the database. We have decided to load only 5000 unique users.
+                // If more users are requested, these will be copies of the first 5000
 
-                    pstmt.setString(1, UtilsJson.getFirstName());
-                    pstmt.setString(2, UtilsJson.getLastName());
 
-                    System.out.println(UtilsJson.getGender());
-                    if (UtilsJson.getGender().equals("male")) {
-                        pstmt.setString(3, Gender.Men.toString());
+                    // Préparation de la requête : Ajout des personnes par bloque
+                    for (int i = 0; i < size; i++)
+                    {
+                        UtilsJson.initNext(i); // Actualise l'objet sélectionné dans le tableau Json
 
-                    } else {
-                        pstmt.setString(3, Gender.Women.toString());
+                        pstmt.setString(1, UtilsJson.getFirstName());
+                        pstmt.setString(2, UtilsJson.getLastName());
+
+                        if (UtilsJson.getGender().equals("male"))
+                        {
+                            pstmt.setString(3, Gender.Men.toString());
+
+                        }
+                        else
+                        {
+                            pstmt.setString(3, Gender.Women.toString());
+                        }
+
+
+                        try
+                        {
+                            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(UtilsJson.getDoB());
+                            formattedDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.getLogger(Person.class.getName()).log(Level.SEVERE, null, e);
+                        }
+                        pstmt.setString(4, formattedDate);
+                        pstmt.setString(5, UtilsJson.getEmail());
+                        pstmt.setString(6, UtilsJson.getPhone());
+                        pstmt.addBatch();
                     }
 
+                    System.out.println("EXECUTE"+number);
+                    // Exécution de la requête
+                    pstmt.executeBatch();
 
-                    try {
-                        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(UtilsJson.getDoB());
-                        formattedDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
-                    } catch (Exception e) {
-                        Logger.getLogger(Person.class.getName()).log(Level.SEVERE, null, e);
-                    }
-                    pstmt.setString(4, formattedDate);
-                    pstmt.setString(5, UtilsJson.getEmail());
-                    pstmt.setString(6, UtilsJson.getPhone());
-                    pstmt.addBatch();
-                }
-                // Exécution de la requête
-                pstmt.executeBatch();
 
-                number -= numbertemp;
-            }
-            modified = true;
+                    number -= numbertemp;
+
+               pstmt.close();
+
+            System.out.println(number);
+
+            PreparedStatement pstmt2=null;
+            PreparedStatement pstmt3=null;
+
+            if(number!=0)
+               {
+                   long numberAddedThisTime = nbUserBeforeInsertion + MAX_USER_API;
+                   System.out.println("before insert"+numberAddedThisTime);
+                   System.out.println("numberAddedThisTime before"+numberAddedThisTime);
+                   while (numberAddedThisTime*2 < number)
+                   {
+                       System.out.println("boucle"+numberAddedThisTime);
+                       pstmt2=con.prepareStatement("INSERT INTO `personData`( first_name, last_name, gender, birthday, email, phone) SELECT first_name, last_name, gender, birthday, email, phone FROM personData");
+                       number -= numberAddedThisTime;
+                       numberAddedThisTime += numberAddedThisTime;
+                       pstmt2.execute();
+
+                   }
+                   System.out.println(number+"ajoute "+numberAddedThisTime);
+                   System.out.println("EXECUTE batch 2");
+                   pstmt3 = con.prepareStatement("INSERT INTO `personData`( first_name, last_name, gender, birthday, email, phone) SELECT first_name, last_name, gender, birthday, email, phone FROM personData LIMIT " + number);
+                   pstmt3.execute();
+                   System.out.println("EXECUTE LA QUERY");
+               }
+
             // Fin de connexion
-            pstmt.close();
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(Person.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    @Override
-    public List getListPeople() {
-        if (modified) {
-            listPeople.clear();
-            listPeople = findAllPerson();
-            System.out.println(" APPEL getListPeople");
-            modified = false;
-        }
-
-        return listPeople;
-
-    }
-
-    @Override
-    public List<Person> findAllPerson() {
-        // Liste retournée contenant les personnes en BD
-        listPeople = new ArrayList<>();
-        try {
-            // Connexion
-            Connection connection = dataSource.getConnection();
-
-            PreparedStatement pstmt = connection.prepareStatement(UtilsJDBC.selectToDbAll);
-            ResultSet rs = pstmt.executeQuery();
-
-            // Pour chaque personne en DB
-            while (rs.next()) {
-                // Récupérer les informations
-                String firstName = rs.getString("first_name");
-                String lastName = rs.getString("last_name");
-                Gender gender = rs.getString("gender").equals("Men") ? Gender.Men : Gender.Women;
-                String dob = rs.getString("birthday");
-                String email = rs.getString("email");
-                String phone = rs.getString("phone");
-                int id = rs.getInt("person_id");
 
 
-                listPeople.add(new Person(id, gender, firstName, lastName, dob, email, phone));
-            }
-            rs.close();
-            pstmt.close();
-            connection.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(Person.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return listPeople;
-
-    }
-
-    public String addPerson(Gender gender, String firstName, String lastName, String dob, String email, String phone) {
-        return addPerson(new Person(gender, firstName, lastName, dob, email, phone));
-    }
 
     public String addPerson(Person person) {
         // Connexion JDBC
@@ -177,8 +161,6 @@ public class PersonManager implements PersonManagerLocal {
         } catch (SQLException e) {
             return "Error" + e;
         }
-
-        modified = true;
         return "The person has been successfully added";
     }
 
@@ -200,7 +182,6 @@ public class PersonManager implements PersonManagerLocal {
         } catch (SQLException e) {
             return "Error " + e;
         }
-        modified = true;
         return status;
 
     }
@@ -275,7 +256,6 @@ public class PersonManager implements PersonManagerLocal {
             return "Error during the update : " + e;
         }
 
-        modified = true;
         return "The person has been edited";
 
     }

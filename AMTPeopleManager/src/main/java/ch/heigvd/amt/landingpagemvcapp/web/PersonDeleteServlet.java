@@ -44,19 +44,12 @@ public class PersonDeleteServlet extends HttpServlet
 		//invalid id return to the array page
 		if(id <= 0)
 		{
-				//get list
-				List<Person> list = personManager.getListPeople();
-				request.setAttribute("dataPeople", list);
 				request.getRequestDispatcher("/WEB-INF/pages/PeopleList.jsp").forward(request, response);
-
 		}
 		else
 		{
 			String infosStatus = personManager.deletePerson(id);
 			request.setAttribute("response", infosStatus);
-			//get list
-			List<Person> list = personManager.getListPeople();
-			request.setAttribute("dataPeople", list);
 			request.getRequestDispatcher("/WEB-INF/pages/PeopleList.jsp").forward(request, response);
 		}
 
