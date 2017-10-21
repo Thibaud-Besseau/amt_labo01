@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Thibaud Besseau on 24.09.2017.
+ * Created by IntelliJ IDEA.
+ * User: Thibaud Besseau & Michela Zucca
+ * Date: 24.09.2017
  */
 @WebServlet(name = "PersonServlet", urlPatterns = {"/people-list"})
 public class PersonServlet extends HttpServlet

@@ -1,9 +1,7 @@
 <%--
   Created by IntelliJ IDEA.
-  User: Thibaud Besseau
+  User: Thibaud Besseau & Michela Zucca
   Date: 24.09.2017
-  Time: 16:36
-  To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -38,7 +36,7 @@
             <input class="form-control" name="numberUser" id="numberUser" type="number" aria-describedby="Number User" placeholder="Enter number users" required="true">
           </div>
             <button type="submit"  class="btn btn-primary btn-block">Load</button>
-          <a class="btn btn-primary btn-danger btn-block" href="index.html">Cancel</a>
+          <a class="btn btn-primary btn-danger btn-block" href="people-list">Cancel</a>
         </form>
       </div>
     </div>

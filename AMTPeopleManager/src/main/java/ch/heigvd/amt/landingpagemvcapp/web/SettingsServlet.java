@@ -11,16 +11,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by Thibaud Besseau on 24.09.2017.
+ * Created by IntelliJ IDEA.
+ * User: Thibaud Besseau & Michela Zucca
+ * Date: 24.09.2017
  */
 @WebServlet(name = "SettingsServlet", urlPatterns = {"/settings"})
-public class SettingsServlet extends HttpServlet
-{
+public class SettingsServlet extends HttpServlet {
     @EJB
     PersonManagerLocal personManager;
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         processRequest(request, response);
     }
 
@@ -35,8 +35,7 @@ public class SettingsServlet extends HttpServlet
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
 
         request.getRequestDispatcher("/WEB-INF/pages/settings.jsp").forward(request, response);
     }
@@ -48,15 +47,13 @@ public class SettingsServlet extends HttpServlet
      * @return a String containing servlet description
      */
     @Override
-    public String getServletInfo()
-    {
+    public String getServletInfo() {
         return "Settings";
     }// </editor-fold>
 
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
 
         String targetUrl = request.getContextPath() + "/settings";
         int numberUser;
@@ -64,27 +61,20 @@ public class SettingsServlet extends HttpServlet
         String action = request.getParameter("action");
         String data = request.getParameter("numberUser");
 
-        if (data != null)
-        {
+        if (data != null) {
             numberUser = Integer.parseInt(data);
-        }
-        else
-        {
+        } else {
             numberUser = 0;
             request.getSession().setAttribute("error", "Enter a valid value. Please try again.");
         }
 
 
-        if (numberUser > 0)
-        {
-            try
-            {
+        if (numberUser > 0) {
+            try {
                 personManager.randomPeople(numberUser);
                 targetUrl = request.getContextPath() + "/people-list";
 
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 request.getSession().setAttribute("error", "An error occurred while loading the people list. Please try again." + e.toString());
             }
         }

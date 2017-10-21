@@ -13,10 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
-
 /**
- * Created by Thibaud Besseau on 24.09.2017.
+ * Created by IntelliJ IDEA.
+ * User: Thibaud Besseau & Michela Zucca
+ * Date: 24.09.2017
+
  * Used to create a new person or edit
  */
 @WebServlet(name = "PersonActionServlet", urlPatterns = {"/person-action"})

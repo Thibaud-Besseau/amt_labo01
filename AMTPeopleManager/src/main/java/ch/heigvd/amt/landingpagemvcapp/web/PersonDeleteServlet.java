@@ -1,21 +1,21 @@
 package ch.heigvd.amt.landingpagemvcapp.web;
 
-import ch.heigvd.amt.landingpagemvcapp.model.Person;
-import ch.heigvd.amt.landingpagemvcapp.services.PersonManager;
 import ch.heigvd.amt.landingpagemvcapp.services.PersonManagerLocal;
 
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
- * Created by Thibaud Besseau on 24.09.2017.
+ * Created by IntelliJ IDEA.
+ * User: Thibaud Besseau & Michela Zucca
+ * Date: 24.09.2017
+ *
+ * Used to delete a person on Database
  */
 @WebServlet(name = "PersonDeleteServlet", urlPatterns = {"/delete"})
 public class PersonDeleteServlet extends HttpServlet

@@ -5,6 +5,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URL;
+/**
+ * Created by IntelliJ IDEA.
+ * User: Thibaud Besseau & Michela Zucca
+ * Date: 24.09.2017
+ *
+ * Used to 
+ */
 
 public class UtilsJson
 {

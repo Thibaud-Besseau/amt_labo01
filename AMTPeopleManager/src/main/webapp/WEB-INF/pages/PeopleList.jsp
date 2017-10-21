@@ -1,9 +1,7 @@
 <%--
   Created by IntelliJ IDEA.
-  User: Thibaud Besseau
+  User: Thibaud Besseau & Michela Zucca
   Date: 24.09.2017
-  Time: 16:36
-  To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -33,18 +31,12 @@
 </script>
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand" href="index.html">AMT Labo 01</a>
+    <a class="navbar-brand" href="index.html">AMT Labo 01 - People Manager</a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                <a class="nav-link" href="index.html">
-                    <i class="fa fa-fw fa-dashboard"></i>
-                    <span class="nav-link-text">Dashboard</span>
-                </a>
-            </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Data">
                 <a class="nav-link" href="people-list">
                     <i class="fa fa-fw fa-table"></i>
@@ -54,15 +46,8 @@
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Settings">
                 <a class="nav-link" href="settings">
                     <i class="fa fa-fw fa-wrench"></i>
-                    <span class="nav-link-text">Settings</span>
+                    <span class="nav-link-text">Person Generator</span>
                 </a>
-            </li>
-        </ul>
-
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
-                    <i class="fa fa-fw fa-sign-out"></i>Logout</a>
             </li>
         </ul>
     </div>
@@ -71,9 +56,6 @@
     <div class="container-fluid">
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="#">Dashboard</a>
-            </li>
             <li class="breadcrumb-item active">Tables</li>
             <li class="pull-right text-info">${status}</li>
         </ol>
@@ -150,6 +132,7 @@
             </div>
         </div>
     </div>
+
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/popper/popper.min.js"></script>
