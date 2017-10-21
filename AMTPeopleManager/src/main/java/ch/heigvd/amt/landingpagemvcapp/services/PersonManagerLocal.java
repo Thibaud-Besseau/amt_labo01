@@ -1,14 +1,20 @@
 package ch.heigvd.amt.landingpagemvcapp.services;
 
-import ch.heigvd.amt.landingpagemvcapp.model.Enums.Gender;
 import ch.heigvd.amt.landingpagemvcapp.model.Person;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 import javax.ejb.Local;
 import javax.servlet.http.HttpServletRequest;
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: Thibaud Besseau & Michela Zucca
+ * Date: 24.09.2017
+ *
+ * Interface PersonManager
+ */
 
 @Local
 public interface PersonManagerLocal {

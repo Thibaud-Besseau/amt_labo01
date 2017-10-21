@@ -1,7 +1,13 @@
 package ch.heigvd.amt.landingpagemvcapp.services;
 
-public class UtilsJDBC
-{
+/**
+ * Created by IntelliJ IDEA.
+ * User: Thibaud Besseau & Michela Zucca
+ * Date: 24.09.2017
+ *
+ * Used for managing database
+ */
+public class UtilsJDBC {
 
     // Insertion en base de données d'une personne
     public static String insertToDB = "INSERT INTO personData(first_name,last_name,gender,birthday,email,phone) " +
@@ -18,16 +24,12 @@ public class UtilsJDBC
 
     public static String countToDbAll = "SELECT COUNT(*) FROM personData";
 
-    public static String selectToDbAllWithLimit(String columName, String direction, String searchInput)
-    {
+    public static String selectToDbAllWithLimit(String columName, String direction, String searchInput) {
 
-        if (searchInput.isEmpty())
-        {
+        if (searchInput.isEmpty()) {
             String SQLFormat = "SELECT * FROM personData ORDER BY %s" + " %s " + " LIMIT ?, ?";
             return String.format(SQLFormat, columName, direction);
-        }
-        else
-        {
+        } else {
             String SQLFormat = "SELECT * FROM personData WHERE first_name LIKE '%" + searchInput +
                     "%' " + "OR first_name LIKE '%" + searchInput +
                     "%' " + "OR last_name LIKE '%" + searchInput +

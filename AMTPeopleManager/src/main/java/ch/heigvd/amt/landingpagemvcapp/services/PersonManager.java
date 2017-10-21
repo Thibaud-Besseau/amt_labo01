@@ -20,6 +20,13 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Created by IntelliJ IDEA.
+ * User: Thibaud Besseau & Michela Zucca
+ * Date: 24.09.2017
+ *
+ * Service PersonManager. Used to manage people
+ */
 @Stateless
 public class PersonManager implements PersonManagerLocal {
 

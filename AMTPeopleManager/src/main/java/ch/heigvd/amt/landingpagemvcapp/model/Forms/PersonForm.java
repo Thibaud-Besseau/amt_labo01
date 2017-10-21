@@ -6,7 +6,13 @@ import ch.heigvd.amt.landingpagemvcapp.model.Person;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * Created by IntelliJ IDEA.
+ * User: Thibaud Besseau & Michela Zucca
+ * Date: 24.09.2017
+ *
+ * Form
+ */
 public class PersonForm
 {
 	//list the inputs

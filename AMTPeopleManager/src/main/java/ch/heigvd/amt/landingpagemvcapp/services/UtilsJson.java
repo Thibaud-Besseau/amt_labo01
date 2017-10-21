@@ -10,7 +10,7 @@ import java.net.URL;
  * User: Thibaud Besseau & Michela Zucca
  * Date: 24.09.2017
  *
- * Used to 
+ * Used for managing randomly generated Json on https://randomuser.me
  */
 
 public class UtilsJson

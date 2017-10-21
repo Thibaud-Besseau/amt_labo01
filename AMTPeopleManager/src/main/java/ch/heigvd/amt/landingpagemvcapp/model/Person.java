@@ -1,9 +1,12 @@
 package ch.heigvd.amt.landingpagemvcapp.model;
 
 import ch.heigvd.amt.landingpagemvcapp.model.Enums.Gender;
-
 /**
- * Created by Thibaud Besseau on 24.09.2017.
+ * Created by IntelliJ IDEA.
+ * User: Thibaud Besseau & Michela Zucca
+ * Date: 24.09.2017
+ *
+ * Model Person
  */
 public class Person
 {
