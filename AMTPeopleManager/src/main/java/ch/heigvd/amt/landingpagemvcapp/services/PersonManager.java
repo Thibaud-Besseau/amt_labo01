@@ -21,16 +21,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Stateless
-public class PersonManager implements PersonManagerLocal
-{
+public class PersonManager implements PersonManagerLocal {
 
     final int MAX_USER_API = 5000;
     // JDBC Acces
     @Resource(lookup = "java:/jdbc/person")
     private DataSource dataSource;
 
-    public void randomPeople(int number) throws IOException
-    {
+    public void randomPeople(int number) throws IOException {
         int numbertemp;
         String formattedDate = "";
 
@@ -39,18 +37,14 @@ public class PersonManager implements PersonManagerLocal
         PreparedStatement pstmt = null;
         int nbUserBeforeInsertion = 0;
 
-        try
-        {
+        try {
 
             //to optimize the time to fill the database. We have decided to load only 5000 unique users (maximum authorized by the API).
             // If more users are requested, these will be copies of the first 5000
-            if (number > MAX_USER_API)
-            {
+            if (number > MAX_USER_API) {
                 nbUserBeforeInsertion = getTotalPeople();
                 numbertemp = MAX_USER_API;
-            }
-            else
-            {
+            } else {
                 numbertemp = number;
             }
 
@@ -64,31 +58,24 @@ public class PersonManager implements PersonManagerLocal
             pstmt = connection.prepareStatement(UtilsJDBC.insertToDB);
 
             // add the person informations in the query
-            for (int i = 0; i < size; i++)
-            {
+            for (int i = 0; i < size; i++) {
                 UtilsJson.initNext(i); // Actualise l'objet sélectionné dans le tableau Json
 
                 pstmt.setString(1, UtilsJson.getFirstName());
                 pstmt.setString(2, UtilsJson.getLastName());
 
-                if (UtilsJson.getGender().equals("male"))
-                {
+                if (UtilsJson.getGender().equals("male")) {
                     pstmt.setString(3, Gender.Men.toString());
 
-                }
-                else
-                {
+                } else {
                     pstmt.setString(3, Gender.Women.toString());
                 }
 
 
-                try
-                {
+                try {
                     Date date = new SimpleDateFormat("yyyy-MM-dd").parse(UtilsJson.getDoB());
                     formattedDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     Logger.getLogger(Person.class.getName()).log(Level.SEVERE, null, e);
                 }
                 pstmt.setString(4, formattedDate);
@@ -110,11 +97,9 @@ public class PersonManager implements PersonManagerLocal
             PreparedStatement pstmt3 = null;
 
             //Duplicate database row
-            if (number != 0)
-            {
+            if (number != 0) {
                 long numberAddedThisTime = nbUserBeforeInsertion + MAX_USER_API;
-                while (numberAddedThisTime * 2 < number)
-                {
+                while (numberAddedThisTime * 2 < number) {
                     pstmt2 = connection.prepareStatement("INSERT INTO `personData`( first_name, last_name, gender, birthday, email, phone) SELECT first_name, last_name, gender, birthday, email, phone FROM personData");
                     number -= numberAddedThisTime;
                     numberAddedThisTime += numberAddedThisTime;
@@ -127,21 +112,17 @@ public class PersonManager implements PersonManagerLocal
 
             // End connection
             connection.close();
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             Logger.getLogger(Person.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
 
-    public String addPerson(Person person)
-    {
+    public String addPerson(Person person) {
         // JDBC Connection
         Connection connection = null;
 
-        try
-        {
+        try {
             // Connection
             connection = dataSource.getConnection();
             PreparedStatement pstmt = connection.prepareStatement(UtilsJDBC.insertToDB);
@@ -156,23 +137,19 @@ public class PersonManager implements PersonManagerLocal
             pstmt.close();
             connection.close();
 
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             return "Error" + e;
         }
         return "The person has been successfully added";
     }
 
 
-    public String deletePerson(int id)
-    {
+    public String deletePerson(int id) {
         String status;
         // JDBC Connection
         Connection connection = null;
 
-        try
-        {
+        try {
             // Connexion
             connection = dataSource.getConnection();
             PreparedStatement pstmt = connection.prepareStatement(UtilsJDBC.removeToDB);
@@ -181,9 +158,7 @@ public class PersonManager implements PersonManagerLocal
             pstmt.close();
             status = "The person has been deleted";
             connection.close();
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             return "Error " + e;
         }
         return status;
@@ -191,8 +166,7 @@ public class PersonManager implements PersonManagerLocal
     }
 
     @Override
-    public Person getPerson(int id)
-    {
+    public Person getPerson(int id) {
         String firstName;
         String lastName;
         Gender gender;
@@ -203,8 +177,7 @@ public class PersonManager implements PersonManagerLocal
         // JDBC connection
         Connection connection = null;
 
-        try
-        {
+        try {
             // connection
             connection = dataSource.getConnection();
             PreparedStatement pstmt = connection.prepareStatement(UtilsJDBC.selectToDbWithID);
@@ -212,8 +185,7 @@ public class PersonManager implements PersonManagerLocal
 
             ResultSet rs = pstmt.executeQuery();
 
-            if (rs.next())
-            {
+            if (rs.next()) {
                 firstName = rs.getString("first_name");
                 lastName = rs.getString("last_name");
                 gender = rs.getString("gender").equals("Men") ? Gender.Men : Gender.Women;
@@ -221,17 +193,13 @@ public class PersonManager implements PersonManagerLocal
                 email = rs.getString("email");
                 phone = rs.getString("phone");
 
-            }
-            else
-            {
+            } else {
                 return null;
             }
             pstmt.close();
             rs.close();
             connection.close();
-        }
-        catch (SQLException ex)
-        {
+        } catch (SQLException ex) {
             return null;
         }
 
@@ -239,13 +207,11 @@ public class PersonManager implements PersonManagerLocal
     }
 
     @Override
-    public String editPerson(Person person)
-    {
+    public String editPerson(Person person) {
         // JDBC connection
         Connection connection = null;
 
-        try
-        {
+        try {
             // Connexion
             connection = dataSource.getConnection();
             PreparedStatement pstmt = connection.prepareStatement(UtilsJDBC.updateToDB);
@@ -261,9 +227,7 @@ public class PersonManager implements PersonManagerLocal
             pstmt.close();
             connection.close();
 
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
 
             return "Error during the update : " + e;
         }
@@ -273,14 +237,12 @@ public class PersonManager implements PersonManagerLocal
     }
 
     @Override
-    public int getTotalPeople()
-    {
+    public int getTotalPeople() {
         // JDBC connection
         Connection connection = null;
         int total = 0;
 
-        try
-        {
+        try {
 
             connection = dataSource.getConnection();
             PreparedStatement pstmt = connection.prepareStatement(UtilsJDBC.countToDbAll);
@@ -290,9 +252,7 @@ public class PersonManager implements PersonManagerLocal
             rs.close();
             pstmt.close();
             connection.close();
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             System.out.println("Error : " + e.getMessage());
             return total;
         }
@@ -301,14 +261,12 @@ public class PersonManager implements PersonManagerLocal
     }
 
     @Override
-    public int getNumberPeopleSearch(String searchInput)
-    {
+    public int getNumberPeopleSearch(String searchInput) {
         // JDBC connection
         Connection connection = null;
         int total = 0;
 
-        try
-        {
+        try {
             String SQLFormat = "SELECT COUNT(*) as 'total' FROM personData WHERE first_name LIKE '%" + searchInput +
                     "%' " + "OR first_name LIKE '%" + searchInput +
                     "%' " + "OR last_name LIKE '%" + searchInput +
@@ -326,9 +284,7 @@ public class PersonManager implements PersonManagerLocal
             rs.close();
             pstmt.close();
             connection.close();
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             System.out.println("Error : " + e.getMessage());
             return total;
         }
@@ -337,16 +293,12 @@ public class PersonManager implements PersonManagerLocal
     }
 
     public JSONObject getAllPeople(int totalRecords, String columName, String direction, int initial, int recordSize, HttpServletRequest request, String searchInput)
-            throws SQLException, ClassNotFoundException
-    {
+            throws SQLException, ClassNotFoundException {
 
         int totalAfterSearch;
-        if (searchInput.isEmpty())
-        {
+        if (searchInput.isEmpty()) {
             totalAfterSearch = totalRecords;
-        }
-        else
-        {
+        } else {
             totalAfterSearch = getNumberPeopleSearch(searchInput);
         }
         JSONObject result = new JSONObject();
@@ -362,8 +314,7 @@ public class PersonManager implements PersonManagerLocal
         //for searching
         ResultSet rs = pstmt.executeQuery();
 
-        while (rs.next())
-        {
+        while (rs.next()) {
             JSONArray jsonArray = new JSONArray();
             // Add the informations into the JSON array
             jsonArray.put(rs.getString("gender").equals("Men") ? Gender.Men : Gender.Women);
@@ -385,15 +336,12 @@ public class PersonManager implements PersonManagerLocal
         rs.close();
         pstmt.close();
         connection.close();
-        try
-        {
+        try {
             result.put("data", array);
             result.put("iTotalRecords", totalRecords);
             result.put("iTotalDisplayRecords", totalAfterSearch);
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println("Error : " + e.getMessage());
         }
 
