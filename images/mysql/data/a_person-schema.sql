@@ -9,7 +9,7 @@ USE person;
 -- Table structure for table `Person`
 --
 CREATE TABLE personData (
-  person_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  person_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(45) NOT NULL,
   last_name VARCHAR(45) NOT NULL,
   gender VARCHAR(45) NOT NULL,
