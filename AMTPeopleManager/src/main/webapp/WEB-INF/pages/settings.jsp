@@ -35,7 +35,7 @@
         <form action="settings" method=post>
           <div class="form-group">
             <label for="numberUser">Number of users needed</label>
-            <input class="form-control" name="numberUser" id="numberUser" type="number" aria-describedby="Number User" placeholder="Enter number users">
+            <input class="form-control" name="numberUser" id="numberUser" type="number" aria-describedby="Number User" placeholder="Enter number users" required="true">
           </div>
             <button type="submit"  class="btn btn-primary btn-block">Load</button>
           <a class="btn btn-primary btn-danger btn-block" href="index.html">Cancel</a>

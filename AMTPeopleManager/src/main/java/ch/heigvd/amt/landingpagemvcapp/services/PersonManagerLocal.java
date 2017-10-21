@@ -13,13 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 @Local
 public interface PersonManagerLocal {
 
-    List<Person> findAllPerson();
-
     void randomPeople(int number) throws IOException;
-
-    List getListPeople();
-
-    String addPerson(Gender gender, String firstName, String lastName, String dob, String email, String phone);
 
     String addPerson(Person person);
 
@@ -31,5 +25,7 @@ public interface PersonManagerLocal {
 
     int getTotalPeople();
 
-    public JSONObject getAllPeople(int totalRecords, String columName, String direction, int initial, int recordSize, HttpServletRequest request) throws SQLException, ClassNotFoundException;
+    int getNumberPeopleSearch(String searchInput);
+
+    JSONObject getAllPeople(int totalRecords, String columName, String direction, int initial, int recordSize, HttpServletRequest request, String searchInput) throws SQLException, ClassNotFoundException;
 }

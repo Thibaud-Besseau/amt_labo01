@@ -75,7 +75,10 @@
                 <a href="#">Dashboard</a>
             </li>
             <li class="breadcrumb-item active">Tables</li>
+            <li class="pull-right text-info">${status}</li>
         </ol>
+
+
         <!-- Example DataTables Card-->
         <div class="card mb-3">
             <div class="card-header">

@@ -9,6 +9,7 @@ jQuery(document).ready(function() {
         "iDisplayStart": 0,
         "bProcessing": true,
         "bServerSide": true,
+        "lengthMenu": [[10, 25, 50], [10, 25, 50]],
         "sAjaxSource": path + "/people-data",
     })
 
