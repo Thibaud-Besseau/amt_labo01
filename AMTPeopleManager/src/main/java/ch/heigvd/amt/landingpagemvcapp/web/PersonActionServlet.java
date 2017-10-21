@@ -6,16 +6,13 @@ import ch.heigvd.amt.landingpagemvcapp.model.Person;
 import ch.heigvd.amt.landingpagemvcapp.services.PersonManagerLocal;
 
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
 
 
 /**
@@ -28,14 +25,9 @@ public class PersonActionServlet extends HttpServlet
     @EJB
     PersonManagerLocal personManager;
 
-    public static final String ERRORS = "errors";
-    public static final String RESULT = "result";
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        Map<String, String> errors = new HashMap<String, String>();
-
         String id = request.getParameter("id");
         String action = request.getParameter("action");
         String status;
@@ -46,16 +38,16 @@ public class PersonActionServlet extends HttpServlet
 
         if (form.getErrors().size() == 0)
         {
-            System.out.println("ACTION :"+action);
+            System.out.println("ACTION :" + action);
             if (action != null && action.equals("edit"))
             {
                 person.setId(Integer.parseInt(id));
-                status= personManager.editPerson(person);
+                status = personManager.editPerson(person);
 
             }
             else
             {
-                status= personManager.addPerson(person);
+                status = personManager.addPerson(person);
             }
             request.setAttribute("status", status);
             this.getServletContext().getRequestDispatcher("/WEB-INF/pages/PeopleList.jsp").forward(request, response);
@@ -93,7 +85,6 @@ public class PersonActionServlet extends HttpServlet
 
         String action = request.getParameter("action");
         //test if user creation is needed
-        System.out.println(action);
         if (action.equals("add"))
         {
             this.getServletContext().getRequestDispatcher("/WEB-INF/pages/person-form.jsp").forward(request, response);
@@ -119,11 +110,8 @@ public class PersonActionServlet extends HttpServlet
         else if (action.equals("delete"))
         {
             String id = request.getParameter("id");
-            System.out.println("delete");
             String status = personManager.deletePerson(Integer.parseInt(id));
             request.setAttribute("status", status);
-
-            System.out.println(status);
             this.getServletContext().getRequestDispatcher("/WEB-INF/pages/PeopleList.jsp").forward(request, response);
         }
         else

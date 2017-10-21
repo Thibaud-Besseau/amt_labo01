@@ -9,6 +9,7 @@ import java.util.Map;
 
 public class PersonForm
 {
+	//list the inputs
 	private static final String GENDER_INPUT   = "genderUser";
 	private static final String FIRST_NAME_INPUT   = "firstNameUser";
 	private static final String LAST_NAME_INPUT   = "lastNameUser";
@@ -29,6 +30,7 @@ public class PersonForm
 
 	public Person addPerson(HttpServletRequest request )
 	{
+		//get the informations given by the user
 		String gender = getValueInput( request, GENDER_INPUT );
 		String firstName = getValueInput( request, FIRST_NAME_INPUT);
 		String lastName = getValueInput( request,  LAST_NAME_INPUT);
@@ -36,13 +38,11 @@ public class PersonForm
 		String phone = getValueInput( request, PHONE_INPUT );
 		String birthday = getValueInput( request, BIRTHDAY_INPUT );
 
-
-
-
 		Person person = new Person();
 
+		//test the user informations
 		try {
-			validateNotEmpty( gender );
+			validateGender( gender );
 		} catch ( Exception e ) {
 			setError( GENDER_INPUT, e.getMessage() );
 		}
@@ -101,8 +101,6 @@ public class PersonForm
 		if (email != null && email.trim().length() != 0)
 		{
 
-
-
 			if (!email.matches("([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)"))
 			{
 				throw new Exception("Please enter a correct email address");
@@ -127,6 +125,14 @@ public class PersonForm
 		if (data == null || data.trim().length() < 3)
 		{
 			throw new Exception("Incorrect data (min 3 letters)");
+		}
+	}
+
+	private void validateGender(String data) throws Exception
+	{
+		if (!data.equals("Men") && !data.equals("Women"))
+		{
+			throw new Exception("Incorrect gender: Authorised Gender = Men or Women");
 		}
 	}
 

@@ -49,7 +49,7 @@ public class PersonDeleteServlet extends HttpServlet
 		else
 		{
 			String infosStatus = personManager.deletePerson(id);
-			request.setAttribute("response", infosStatus);
+			request.setAttribute("status", infosStatus);
 			request.getRequestDispatcher("/WEB-INF/pages/PeopleList.jsp").forward(request, response);
 		}
 
