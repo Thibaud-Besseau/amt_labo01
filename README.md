@@ -1,6 +1,6 @@
 # AMT labo01 - BootCamp Project
 
-This project is conducted for the course "AMT-2017, at HEIG-VD.
+This project is conducted for the course AMT-2017, at HEIG-VD.
 
 * Teacher: Olivier Liechti.
 * Authors: Thibaud Besseau & Michela Zucca.
