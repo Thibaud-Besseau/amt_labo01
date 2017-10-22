@@ -28,6 +28,6 @@ All the people saved in the database are displayed in an array. In this array, i
   * Docker-compose : used to launch application
   
 # How to start the application
-Go in the topology folder ../topology-amt./ , and execute the following command: ```docker-compose up --build```.
+Go in the topology folder ```../topology-amt/``` , and execute the following command: ```docker-compose up --build```.
 
 To access the application, entrer the following URL http://localhost:9090/AMTPeopleManager-1.0-SNAPSHOT/people-list.
