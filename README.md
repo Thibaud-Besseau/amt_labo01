@@ -11,16 +11,12 @@ This application offers to manage a list of people. People are stored in a datab
 * Delete a person
 
 ## How is this
-  * <a href="https://startbootstrap.com/template-overviews/sb-admin/">SB admin</a> for the Bootstrap template.
-  * <a href="https://randomuser.me/api/?inc=gender,name,dob,email,phone&results=">https://sandomuser.me</a> for the random generation of people.
+  * <a href="https://startbootstrap.com/template-overviews/sb-admin/">SB admin</a> : for the Bootstrap template.
+  * <a href="https://randomuser.me/api/?inc=gender,name,dob,email,phone&results=">https://sandomuser.me</a> : for the random
+ generation of people.
+  * Model MVC : used on the server side.
+  * JDBC : used to access the DB
   
-  Project :
-  
-  * Model :
-  * Service :
-  * Web : 
-  
-
 ## How to lanch the application
 Go in the topology folder ../topology-amt./ , and execute the following command: ```docker-compose up --build```.
 
