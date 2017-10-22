@@ -30,4 +30,4 @@ People in the database are presented in a table, the data is presented on severa
 # How to lanch the application
 Go in the topology folder ../topology-amt./ , and execute the following command: ```docker-compose up --build```.
 
-To access the application, entrer the following URL http://localhost:9090/AMTPeopleManager-1.0-SNAPSHOT/people-list">.
+To access the application, entrer the following URL http://localhost:9090/AMTPeopleManager-1.0-SNAPSHOT/people-list.
