@@ -3,7 +3,7 @@
 This project is conducted for the course "AMT-2017, at HEIG-VD.
 
 * Teacher: Olivier Liechti.
-* Authors: Ludovic Delafontaine & Michela Zucca.
+* Authors: Thibaud Besseau & Michela Zucca.
 
 ## What is this
 This application offers to manage a list of people. People are stored in a database.
