@@ -2,6 +2,9 @@
 
 This project is conducted for the course "AMT-2017, at HEIG-VD.
 
+* Teacher: Olivier Liechti.
+* Authors: Ludovic Delafontaine & Michela Zucca.
+
 ## What is this
 This application offers to manage a list of people. People are stored in a database.
 
@@ -27,9 +30,7 @@ People in the database are presented in a table, the data is presented on severa
 # How to lanch the application
 Go in the topology folder ../topology-amt./ , and execute the following command: ```docker-compose up --build```.
 
-To access the application, entrer the following URL: 
-* ?  : <a href="http://localhost:9090/AMTPeopleManager-1.0-SNAPSHOT/people-list">click here</a>
-* Windows : <a href="http://192.168.99.100:9190/AMTPeopleManager-1.0-SNAPSHOT/people-list">click here</a>
+To access the application, entrer the following URL <a href="http://localhost:9090/AMTPeopleManager-1.0-SNAPSHOT/people-list">click here</a>
 
 # User interface
 
